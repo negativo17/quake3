@@ -1,6 +1,6 @@
 Name:           quake3
 Version:        1.32
-Release:        9%{?dist}
+Release:        10
 # Required for overriding official package
 Epoch:          1
 Summary:        Quake III Arena
@@ -20,9 +20,6 @@ Source5:        %{name}-%{version}.tar.gz
 Source6:        TA_mappak1b.zip
 Source7:        TA_mappak2.zip
 Source8:        ta_team_titans.zip
-
-NoSource:       1
-NoSource:       3
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  zip
@@ -115,6 +112,9 @@ fi
 %{_datadir}/applications/%{name}-ta.desktop
 
 %changelog
+* Thu Jul 02 2020 Simone Caronni <negativo17@gmail.com> - 1:1.32-10
+- Remove dist and NoSource tags.
+
 * Sat Jan 23 2016 Simone Caronni <negativo17@gmail.com> - 1:1.32-9
 - Remove obsolete tags.
 
