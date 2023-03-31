@@ -1,6 +1,6 @@
 Name:           quake3
 Version:        1.32
-Release:        10
+Release:        11
 # Required for overriding official package
 Epoch:          1
 Summary:        Quake III Arena
@@ -22,7 +22,7 @@ Source7:        TA_mappak2.zip
 Source8:        ta_team_titans.zip
 
 BuildRequires:  desktop-file-utils
-BuildRequires:  zip
+
 Requires:       %{name}-engine >= %{version}
 
 %description
@@ -73,17 +73,20 @@ mv "missionpack/TA Map Pack 2 Readme" missionpack/MapPack2
 cp -fr usr %{buildroot}
 
 # Quake III
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 install -p -m 644 %{SOURCE1} %{buildroot}%{_datadir}/%{name}/baseq3/pak0.pk3
 install -p -m755 baseq3/*pk3 %{buildroot}%{_datadir}/%{name}/baseq3
 
 # Team Arena
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-ta.desktop
 mkdir -p %{buildroot}%{_datadir}/%{name}/missionpack
 install -p -m 644 %{SOURCE3} %{buildroot}%{_datadir}/%{name}/missionpack/pak0.pk3
 install -p -m755 missionpack/*pk3 %{buildroot}%{_datadir}/%{name}/missionpack
 install -p -m755 missionpack/*cfg %{buildroot}%{_datadir}/%{name}/missionpack
 
+%check
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-ta.desktop
+
+%if 0%{?rhel} == 7
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
@@ -95,9 +98,11 @@ fi
 
 %posttrans
 /usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor &>/dev/null || :
+%endif
 
 %files
-%doc id_patch_pk3s_Q3A_EULA.txt baseq3/Help
+%license id_patch_pk3s_Q3A_EULA.txt
+%doc baseq3/Help
 %dir %{_datadir}/%{name}
 %{_bindir}/%{name}
 %{_datadir}/%{name}/baseq3
@@ -112,6 +117,9 @@ fi
 %{_datadir}/applications/%{name}-ta.desktop
 
 %changelog
+* Fri Mar 31 2023 Simone Caronni <negativo17@gmail.com> - 1:1.32-11
+- Clean up SPEC file.
+
 * Thu Jul 02 2020 Simone Caronni <negativo17@gmail.com> - 1:1.32-10
 - Remove dist and NoSource tags.
 
